@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-In order to learn RcppParallele I've looked into examples at the Rcpp Gallery.
+In order to learn RcppParallele I've looked into examples at the [Rcpp Gallery](http://gallery.rcpp.org/).
 One of the examples presented at the [RcppParallel](https://rcppcore.github.io/RcppParallel/) website is [Transforming a Matrix in Parallel using RcppParallel](http://gallery.rcpp.org/articles/parallel-matrix-transform/) by J.J. Allaire.
 This appears to be written in Doxygen, which I do not know.
 So I thought a good first project for me would be to adapt this example into Rmarkdown, which I do know.

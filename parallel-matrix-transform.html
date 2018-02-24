@@ -124,7 +124,7 @@ $(document).ready(function () {
 </div>
 
 
-<p>In order to learn RcppParallele I’ve looked into examples at the Rcpp Gallery. One of the examples presented at the <a href="https://rcppcore.github.io/RcppParallel/">RcppParallel</a> website is <a href="http://gallery.rcpp.org/articles/parallel-matrix-transform/">Transforming a Matrix in Parallel using RcppParallel</a> by J.J. Allaire. This appears to be written in Doxygen, which I do not know. So I thought a good first project for me would be to adapt this example into Rmarkdown, which I do know.</p>
+<p>In order to learn RcppParallele I’ve looked into examples at the <a href="http://gallery.rcpp.org/">Rcpp Gallery</a>. One of the examples presented at the <a href="https://rcppcore.github.io/RcppParallel/">RcppParallel</a> website is <a href="http://gallery.rcpp.org/articles/parallel-matrix-transform/">Transforming a Matrix in Parallel using RcppParallel</a> by J.J. Allaire. This appears to be written in Doxygen, which I do not know. So I thought a good first project for me would be to adapt this example into Rmarkdown, which I do know.</p>
 <div id="serial-version" class="section level2">
 <h2>Serial Version</h2>
 <p>First a serial version of the matrix transformation. We take the square root of each item of a matrix and return a new matrix with the tranformed values. We do this by using <code>std::transform</code> to call the <code>sqrt</code> function on each element of the matrix:</p>
