@@ -1,0 +1,19 @@
+---
+title: "Parallel distance matrix"
+author: "Brian J. Knaus"
+date: "February 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r}
+Rcpp::sourceCpp('parallel-distance-matrix.cpp')
+```
+
+
