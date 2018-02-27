@@ -17,3 +17,15 @@ Rcpp::sourceCpp('parallel-distance-matrix.cpp')
 ```
 
 
+```{r}
+# create a matrix
+n  = 1000
+m = matrix(runif(n*10), ncol = 10)
+m = m/rowSums(m)
+
+rcpp_parallel_res <- rcpp_parallel_js_distance(m)
+
+rcpp_parallel_res[1:10, 1:6]
+class(rcpp_parallel_res)
+
+```
