@@ -17,3 +17,15 @@ Rcpp::sourceCpp('extract_GT_to_CM_parallel.cpp')
 ```
 
 
+```{r}
+n <- 1e3
+myGT <- paste(sample(0:1, size = n, replace = TRUE),
+              sample(0:1, size = n, replace = TRUE),
+              sep = "/")
+myGT <- paste(myGT, LETTERS, sample(1:20, size = n, replace = TRUE), sep = ":")
+myGT <- matrix(myGT, nrow=100, ncol = 100)
+
+```
+
+
+

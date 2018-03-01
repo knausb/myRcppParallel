@@ -4,17 +4,19 @@
 using namespace RcppParallel;
 
 
-struct GT_to_CM_parallel : public Worker {
+struct GT_to_SM_parallel : public Worker {
   
   // input matrix to read from
-  const RMatrix<SEXP> mat;
+  const std::vector< std::vector< std::string > > mat;
   
   // output matrix to write to
-  RMatrix<SEXP> rmat;
+  std::vector< std::vector< std::string > > rmat;
   
   // initialize from Rcpp input and output matrixes (the RMatrix class
   // can be automatically converted to from the Rcpp matrix type)
-  GT_to_CM_parallel(const Rcpp::StringMatrix mat, Rcpp::CharacterMatrix rmat) : mat(mat), rmat(rmat) {}
+  GT_to_SM_parallel(const std::vector< std::vector< std::string > > mat, 
+                    std::vector< std::vector< std::string > > rmat) :
+    mat(mat), rmat(rmat) {}
   
   
      // function call operator that work for the specified range (begin/end)
@@ -40,13 +42,20 @@ Rcpp::StringMatrix extract_GT_to_CM_parallel( Rcpp::StringMatrix fix,
                                          int extract = 1,
                                          int convertNA = 1) {
   
+  // Rcpp data structures are not thread safe.
+  // So we'll convert it to std::string.
+  std::vector< std::vector< std::string > > gt2;
+  
+  
+  
+  // Initialize output data structure.
   Rcpp::CharacterMatrix rmat(gt.nrow(), gt.ncol() - 1);
   
    // create the worker
-   GT_to_CM_parallel GT_to_CM_parallel(gt, rmat);
+   GT_to_SM_parallel GT_to_SM_parallel(gt2, rmat);
      
    // call it with parallelFor
-   parallelFor(0, gt.nrow(), GT_to_CM_parallel);
+   parallelFor(0, gt2.nrow(), GT_to_SM_parallel);
   
   return rmat;
 }
