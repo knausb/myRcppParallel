@@ -38,6 +38,15 @@ Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
   std::vector< std::string > tmpVector1;
   std::vector< std::string > tmpVector2;
 
+  // Convert Rcpp::StringVector to std::vector.
+  unsigned int i;
+  std::string tmpString;
+
+//  for(i=0; i<myVector.size(); i++){
+//    tmpString = myVector[i];
+//    tmpVector1[i] = tmpString;
+//    tmpVector1[i] = myVector[i];
+//  }
   
   // Create the worker
   getElement getElement(tmpVector1, tmpVector2);

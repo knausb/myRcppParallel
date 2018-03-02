@@ -1,5 +1,5 @@
 ---
-title: "RcppParallel std::string"
+title: "RcppParallel vector of std::string"
 author: "Brian J. Knaus"
 date: "March 1, 2018"
 output: html_document
