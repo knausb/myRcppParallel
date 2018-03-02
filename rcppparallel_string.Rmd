@@ -1,0 +1,115 @@
+---
+title: "RcppParallel std::string"
+author: "Brian J. Knaus"
+date: "March 1, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Implementation using Rcpp
+
+
+```{r, engine='Rcpp'}
+#include <Rcpp.h>
+
+// [[Rcpp::export]]
+std::string getElement( std::string mystring, char split, int element ) {
+  std::string rstring;
+  int elementN = 0;
+  unsigned int i=0;
+  int start = 0;
+  
+  for(i=1; i<mystring.size(); i++){
+    if(mystring[i] == split){
+      // We matched our splitting character.
+      if(elementN == element){
+        // We've arrived at our desired element.
+        rstring = mystring.substr(start, i - start);
+        return rstring;
+      } else {
+        // We need to iterate to the next element.
+        start = i + 1;
+        i = i + 1;
+        elementN = elementN + 1;
+      }
+    }
+  }
+  
+  // The end of the string has no delimiter.
+  // We test if it is the correct element and parse if so.
+  if(elementN == element){
+    rstring = mystring.substr(start, i - start);
+    return rstring;
+  } else {
+    rstring = "-999";
+    return rstring;
+  }
+}
+
+// [[Rcpp::export]]
+Rcpp::StringVector delimitString( Rcpp::StringVector myvector, char myDelim, int element ) {
+  Rcpp::StringVector rvector( myvector.size() );
+  std::string myString;
+  
+  // R is one based, C++ is zero based.
+  element = element - 1;
+  
+  unsigned int i=0;
+  for(i=0; i<myvector.size(); i++){
+    myString = myvector[i];
+    rvector[i] = getElement(myString, myDelim, element);
+  }
+  
+  return rvector;
+}
+
+
+```
+
+
+
+## Parallel version using RcppParallel
+
+```{r}
+Rcpp::sourceCpp('rcppparallel_string.cpp')
+```
+
+
+## Benchmarking
+
+
+First we'll fabricate some example data.
+
+
+```{r}
+n <- 1e1
+myGT <- paste(sample(0:1, size = n, replace = TRUE),
+              sample(0:1, size = n, replace = TRUE),
+              sep = "/")
+myGT <- paste(myGT, LETTERS, 
+              paste(sample(1:200, size = n, replace = TRUE), 
+                    sample(1:200, size = n, replace = TRUE), sep=","),
+              sep = ":")
+myGT <- paste(myGT, sample(1:200, size = n, replace = TRUE), sep = ":")
+head(myGT)
+```
+
+
+
+
+
+```{r}
+library(microbenchmark)
+microbenchmark(gt1 <- delimitString(myGT, ":", 3), times = 10)
+head(gt1)
+
+rcpp_parallel_delimitString(myGT)
+```
+
+
+
+
