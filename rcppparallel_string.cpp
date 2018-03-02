@@ -19,6 +19,10 @@ struct getElement : public Worker {
    
    // function call operator that work for the specified range (begin/end)
    void operator()(std::size_t begin, std::size_t end) {
+     for (std::size_t i = begin; i < end; i++) {
+       retVector[i] = "blah";
+     }
+     
 //     retString = myString;
    }
    
@@ -29,18 +33,22 @@ struct getElement : public Worker {
 // [[Rcpp::export]]
 Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
   
-  // allocate the string we will return
+  // Because Rcpp data structures are not thread safe
+  // we'll use std::vector for input and output.
   std::vector< std::string > tmpVector1;
   std::vector< std::string > tmpVector2;
-  Rcpp::StringVector retVector;
+
   
-  // create the worker
+  // Create the worker
   getElement getElement(tmpVector1, tmpVector2);
 
-   // call it with parallelFor
-   parallelFor(0, tmpVector1.size(), getElement);
+  // Call it with parallelFor
+  parallelFor(0, tmpVector1.size(), getElement);
 
-   return retVector;
+  // allocate the string we will return 
+  Rcpp::StringVector retVector;
+  
+  return retVector;
 }
 
 

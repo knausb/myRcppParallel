@@ -198,17 +198,17 @@ myGT &lt;- paste(myGT, LETTERS,
               sep = &quot;:&quot;)
 myGT &lt;- paste(myGT, sample(1:200, size = n, replace = TRUE), sep = &quot;:&quot;)
 head(myGT)</code></pre>
-<pre><code>## [1] &quot;1/1:A:43,22:109&quot;   &quot;1/0:B:176,59:137&quot;  &quot;0/1:C:31,92:165&quot;  
-## [4] &quot;1/1:D:178,16:20&quot;   &quot;0/0:E:172,146:35&quot;  &quot;1/0:F:154,193:144&quot;</code></pre>
+<pre><code>## [1] &quot;1/0:A:175,145:106&quot; &quot;0/0:B:185,11:147&quot;  &quot;1/0:C:36,144:55&quot;  
+## [4] &quot;1/1:D:117,171:64&quot;  &quot;1/0:E:187,110:7&quot;   &quot;1/1:F:113,186:39&quot;</code></pre>
 <pre class="r"><code>library(microbenchmark)
 microbenchmark(gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3), times = 10)</code></pre>
 <pre><code>## Unit: microseconds
-##                                expr   min    lq     mean median    uq
-##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 3.507 3.624 103.9715  4.004 5.176
+##                                expr   min    lq    mean median    uq
+##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 3.607 3.958 93.1404 4.0345 4.661
 ##      max neval
-##  976.158    10</code></pre>
+##  872.457    10</code></pre>
 <pre class="r"><code>head(gt1)</code></pre>
-<pre><code>## [1] &quot;43,22&quot;   &quot;176,59&quot;  &quot;31,92&quot;   &quot;178,16&quot;  &quot;172,146&quot; &quot;154,193&quot;</code></pre>
+<pre><code>## [1] &quot;175,145&quot; &quot;185,11&quot;  &quot;36,144&quot;  &quot;117,171&quot; &quot;187,110&quot; &quot;113,186&quot;</code></pre>
 <pre class="r"><code>rcpp_parallel_delimitString(myGT)</code></pre>
 <pre><code>## character(0)</code></pre>
 </div>
