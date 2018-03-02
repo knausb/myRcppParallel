@@ -75,6 +75,7 @@ Rcpp::StringVector delimitString( Rcpp::StringVector myvector, char myDelim, int
 ## Parallel version using RcppParallel
 
 ```{r}
+#
 Rcpp::sourceCpp('rcppparallel_string.cpp')
 ```
 
@@ -107,6 +108,7 @@ library(microbenchmark)
 microbenchmark(gt1 <- delimitString(myGT, ":", 3), times = 10)
 head(gt1)
 
+#
 rcpp_parallel_delimitString(myGT)
 ```
 

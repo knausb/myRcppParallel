@@ -13,7 +13,7 @@ struct getElement : public Worker {
    // output vector to write to
    std::vector< std::string > retVector;
 
-   // initialize input and output matrixes
+   // initialize input and output vectors
    getElement(const std::vector< std::string > myVector, std::vector< std::string > retVector)
       : myVector(myVector), retVector(retVector) {}
    
@@ -22,10 +22,7 @@ struct getElement : public Worker {
      for (std::size_t i = begin; i < end; i++) {
        retVector[i] = "blah";
      }
-     
-//     retString = myString;
    }
-   
 };
 
 
@@ -35,18 +32,17 @@ Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
   
   // Because Rcpp data structures are not thread safe
   // we'll use std::vector for input and output.
-  std::vector< std::string > tmpVector1;
-  std::vector< std::string > tmpVector2;
+  std::vector< std::string > tmpVector1(myVector.size());
+  std::vector< std::string > tmpVector2(myVector.size());
 
   // Convert Rcpp::StringVector to std::vector.
   unsigned int i;
   std::string tmpString;
 
-//  for(i=0; i<myVector.size(); i++){
-//    tmpString = myVector[i];
-//    tmpVector1[i] = tmpString;
-//    tmpVector1[i] = myVector[i];
-//  }
+  for(i=0; i<myVector.size(); i++){
+    tmpString = myVector[i];
+    tmpVector1[i] = tmpString;
+  }
   
   // Create the worker
   getElement getElement(tmpVector1, tmpVector2);
@@ -55,7 +51,13 @@ Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
   parallelFor(0, tmpVector1.size(), getElement);
 
   // allocate the string we will return 
-  Rcpp::StringVector retVector;
+  Rcpp::StringVector retVector(tmpVector2.size());
+  
+  for(i=0; i<myVector.size(); i++){
+    Rcpp::Rcout << "Value: " << tmpVector2[i] << "\n";
+    tmpString = tmpVector2[i];
+    retVector[i] = tmpString;
+  }
   
   return retVector;
 }
