@@ -189,7 +189,10 @@ Rcpp::sourceCpp('rcppparallel_string.cpp')</code></pre>
 <div id="benchmarking" class="section level2">
 <h2>Benchmarking</h2>
 <p>First we’ll fabricate some example data.</p>
-<pre class="r"><code>n &lt;- 1e1
+<pre class="r"><code>#n &lt;- 1e7
+#n &lt;- 1e6
+#
+n &lt;- 1e3
 myGT &lt;- paste(sample(0:1, size = n, replace = TRUE),
               sample(0:1, size = n, replace = TRUE),
               sep = &quot;/&quot;)
@@ -199,47 +202,28 @@ myGT &lt;- paste(myGT, LETTERS,
               sep = &quot;:&quot;)
 myGT &lt;- paste(myGT, sample(1:200, size = n, replace = TRUE), sep = &quot;:&quot;)
 head(myGT)</code></pre>
-<pre><code>## [1] &quot;0/0:A:4,91:105&quot;   &quot;0/1:B:51,128:165&quot; &quot;1/1:C:103,3:174&quot; 
-## [4] &quot;1/0:D:29,114:17&quot;  &quot;0/0:E:118,133:55&quot; &quot;1/1:F:50,161:76&quot;</code></pre>
+<pre><code>## [1] &quot;0/0:A:157,176:8&quot;   &quot;1/1:B:74,70:70&quot;    &quot;0/0:C:194,181:10&quot; 
+## [4] &quot;0/0:D:191,162:114&quot; &quot;0/0:E:137,28:35&quot;   &quot;1/1:F:54,159:152&quot;</code></pre>
 <pre class="r"><code>library(microbenchmark)
-microbenchmark(gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3), times = 10)</code></pre>
+nTimes &lt;- 20
+microbenchmark(gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3), times = nTimes)</code></pre>
 <pre><code>## Unit: microseconds
-##                                expr   min    lq    mean median   uq
-##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 3.389 3.513 97.5266   3.68 4.75
-##      max neval
-##  917.923    10</code></pre>
+##                                expr    min     lq     mean median      uq
+##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 83.291 84.703 158.0219 87.508 94.1215
+##       max neval
+##  1174.753    20</code></pre>
 <pre class="r"><code>head(gt1)</code></pre>
-<pre><code>## [1] &quot;4,91&quot;    &quot;51,128&quot;  &quot;103,3&quot;   &quot;29,114&quot;  &quot;118,133&quot; &quot;50,161&quot;</code></pre>
+<pre><code>## [1] &quot;157,176&quot; &quot;74,70&quot;   &quot;194,181&quot; &quot;191,162&quot; &quot;137,28&quot;  &quot;54,159&quot;</code></pre>
 <pre class="r"><code>#
-rcpp_parallel_delimitString(myGT)</code></pre>
-<pre><code>## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value: 
-## Value:</code></pre>
-<pre><code>##  [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;
-## [24] &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
+microbenchmark(gt2 &lt;- rcpp_parallel_delimitString(myGT), times = nTimes)</code></pre>
+<pre><code>## Unit: microseconds
+##                                      expr     min      lq     mean
+##  gt2 &lt;- rcpp_parallel_delimitString(myGT) 208.893 213.192 294.5299
+##    median       uq  max neval
+##  228.3755 244.3735 1232    20</code></pre>
+<pre class="r"><code>#
+head(gt2)</code></pre>
+<pre><code>## [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
 </div>
 
 

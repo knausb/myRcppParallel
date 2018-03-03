@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Implementation using Rcpp
 
 
-```{r, engine='Rcpp'}
+```{r Rcpp, engine='Rcpp'}
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
@@ -74,7 +74,7 @@ Rcpp::StringVector delimitString( Rcpp::StringVector myvector, char myDelim, int
 
 ## Parallel version using RcppParallel
 
-```{r}
+```{r RcppParallel}
 #
 Rcpp::sourceCpp('rcppparallel_string.cpp')
 ```
@@ -86,8 +86,11 @@ Rcpp::sourceCpp('rcppparallel_string.cpp')
 First we'll fabricate some example data.
 
 
-```{r}
-n <- 1e1
+```{r data}
+#n <- 1e7
+#n <- 1e6
+#
+n <- 1e3
 myGT <- paste(sample(0:1, size = n, replace = TRUE),
               sample(0:1, size = n, replace = TRUE),
               sep = "/")
@@ -103,15 +106,19 @@ head(myGT)
 
 
 
-```{r}
+```{r implement Rcpp}
 library(microbenchmark)
-microbenchmark(gt1 <- delimitString(myGT, ":", 3), times = 10)
+nTimes <- 20
+microbenchmark(gt1 <- delimitString(myGT, ":", 3), times = nTimes)
 head(gt1)
-
-#
-rcpp_parallel_delimitString(myGT)
 ```
 
 
+```{r implement RcppParallel}
+#
+microbenchmark(gt2 <- rcpp_parallel_delimitString(myGT), times = nTimes)
+#
+head(gt2)
+```
 
 
