@@ -10,13 +10,37 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+I work with tabular or matrix-like data where samples are in columns and traits (variants) are in rows.
+However, each value of this matrix, or record, contains multiple pieces of information that is delimited.
+An example is as follows.
+
+
+$$
+0|0:48:1:51,51
+$$
+
+
+Note that while the data technically is numeric, because it is delimited we need to handle it in a non-numeric container, such as `std::string`.
+Also note that while the data is delimited with a colon (`:`) there is secondary delimitation.
+For example, the fourth element is comma delimited.
+This means it would be nice to engineer a flexible solution.
+Because each row is an independent trait, it seemed like a good candidate for parallelization.
+Because I already use `Rcpp` it seemed that `RcppParallel` would be a good solution.
+The `R` and `Rcpp` data structures are not thread safe because a garbage collection event may occur.
+To solve this, `RcppParallel` provides `RVector` and `RMatrix`.
+However, these are only suited for numeric data.
+A post to `rcpp-devel` suggested I could use C++ containers as a thread safe alternative.
+Ultimately I would like to work on some form of matrix (e.g., std::vector< std::vector< std::string > >) but here I work with a `std::vector< std::string > >` in order to simplify the task.
+Here I attempt to implement multi-threading using `RcppParallel` and `std::vector< std::string >`.
+
+
 ## Implementation using Rcpp
 
 
 ```{r Rcpp, engine='Rcpp'}
 #include <Rcpp.h>
 
-// [[Rcpp::export]]
+
 std::string getElement( std::string mystring, char split, int element ) {
   std::string rstring;
   int elementN = 0;
@@ -90,7 +114,7 @@ First we'll fabricate some example data.
 #n <- 1e7
 #n <- 1e6
 #
-n <- 1e3
+n <- 1e1
 myGT <- paste(sample(0:1, size = n, replace = TRUE),
               sample(0:1, size = n, replace = TRUE),
               sep = "/")

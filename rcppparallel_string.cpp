@@ -2,28 +2,30 @@
 #include <Rcpp.h>
 #include <RcppParallel.h>
 using namespace RcppParallel;
-
-
-
 // [[Rcpp::depends(RcppParallel)]]
+
+
 struct getElement : public Worker {
    // input vector to read from
    const std::vector< std::string > myVector;
    
    // output vector to write to
    std::vector< std::string > retVector;
+   std::string myString;
 
    // initialize input and output vectors
    getElement(const std::vector< std::string > myVector, std::vector< std::string > retVector)
-      : myVector(myVector), retVector(retVector) {}
+      : myVector(myVector), retVector(myVector) {}
    
    // function call operator that work for the specified range (begin/end)
    void operator()(std::size_t begin, std::size_t end) {
      for (std::size_t i = begin; i < end; i++) {
 //       Rcpp::checkUserInterrupt();
 //       retVector[i] = "blah";
-       retVector[i] = myVector[i];
-//       Rcpp::Rcout << "Value: " << retVector[i] << "\n";
+//       retVector[i] = myVector[i];
+       myString = myVector[i];
+       retVector[i] = myString;
+//       Rcpp::Rcout << "Value: " << myString << "\n";
      }
    }
 };
