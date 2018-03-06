@@ -14,17 +14,18 @@ struct getElement : public Worker {
    std::string myString;
 
    // initialize input and output vectors
-   getElement(const std::vector< std::string > myVector, std::vector< std::string > retVector)
+   getElement(const std::vector< std::string > myVector, std::vector< std::string >& retVector)
       : myVector(myVector), retVector(myVector) {}
    
    // function call operator that work for the specified range (begin/end)
    void operator()(std::size_t begin, std::size_t end) {
      for (std::size_t i = begin; i < end; i++) {
 //       Rcpp::checkUserInterrupt();
-//       retVector[i] = "blah";
+       retVector[i] = "blah";
 //       retVector[i] = myVector[i];
-       myString = myVector[i];
-       retVector[i] = myString;
+//       myString = myVector[i];
+//       retVector[i] = myString;
+//       retVector[i] = i;
 //       Rcpp::Rcout << "Value: " << myString << "\n";
      }
    }

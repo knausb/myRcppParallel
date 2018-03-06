@@ -205,25 +205,25 @@ myGT &lt;- paste(myGT, LETTERS,
               sep = &quot;:&quot;)
 myGT &lt;- paste(myGT, sample(1:200, size = n, replace = TRUE), sep = &quot;:&quot;)
 head(myGT)</code></pre>
-<pre><code>## [1] &quot;0/1:A:138,27:26&quot;  &quot;0/1:B:54,19:195&quot;  &quot;0/1:C:122,89:110&quot;
-## [4] &quot;1/1:D:94,103:160&quot; &quot;1/1:E:74,113:183&quot; &quot;0/0:F:123,15:194&quot;</code></pre>
+<pre><code>## [1] &quot;1/1:A:80,135:74&quot;  &quot;0/1:B:181,88:152&quot; &quot;0/0:C:102,80:11&quot; 
+## [4] &quot;1/1:D:16,146:94&quot;  &quot;0/0:E:13,50:115&quot;  &quot;0/1:F:146,90:47&quot;</code></pre>
 <pre class="r"><code>library(microbenchmark)
 nTimes &lt;- 20
 microbenchmark(gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3), times = nTimes)</code></pre>
 <pre><code>## Unit: microseconds
 ##                                expr   min    lq     mean median    uq
-##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 5.257 5.465 59.45705 5.6435 5.926
+##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 5.008 5.179 64.69035 5.3465 5.736
 ##       max neval
-##  1049.102    20</code></pre>
+##  1154.556    20</code></pre>
 <pre class="r"><code>head(gt1)</code></pre>
-<pre><code>## [1] &quot;138,27&quot; &quot;54,19&quot;  &quot;122,89&quot; &quot;94,103&quot; &quot;74,113&quot; &quot;123,15&quot;</code></pre>
+<pre><code>## [1] &quot;80,135&quot; &quot;181,88&quot; &quot;102,80&quot; &quot;16,146&quot; &quot;13,50&quot;  &quot;146,90&quot;</code></pre>
 <pre class="r"><code>#
 microbenchmark(gt2 &lt;- rcpp_parallel_delimitString(myGT), times = nTimes)</code></pre>
 <pre><code>## Unit: microseconds
-##                                      expr    min      lq     mean  median
-##  gt2 &lt;- rcpp_parallel_delimitString(myGT) 13.039 13.8035 81.24875 16.4435
-##      uq      max neval
-##  24.498 1146.935    20</code></pre>
+##                                      expr   min     lq     mean  median
+##  gt2 &lt;- rcpp_parallel_delimitString(myGT) 9.668 10.388 67.85025 11.0475
+##     uq     max neval
+##  19.28 973.169    20</code></pre>
 <pre class="r"><code>#
 head(gt2)</code></pre>
 <pre><code>## [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
