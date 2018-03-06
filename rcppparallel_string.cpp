@@ -14,18 +14,21 @@ struct getElement : public Worker {
    std::string myString;
 
    // initialize input and output vectors
-   getElement(const std::vector< std::string > myVector, std::vector< std::string > retVector)
-      : myVector(myVector), retVector(myVector) {}
+   getElement(const std::vector< std::string > myVector, std::vector< std::string > &retVector)
+      : myVector(myVector), retVector(retVector) {}
    
    // function call operator that work for the specified range (begin/end)
    void operator()(std::size_t begin, std::size_t end) {
+//     Rcpp::Rcout << "Value: " << begin << "\n";
      for (std::size_t i = begin; i < end; i++) {
 //       Rcpp::checkUserInterrupt();
+//       Rcpp::Rcout << "Value: " << i << "\n";
 //       retVector[i] = "blah";
 //       retVector[i] = myVector[i];
-       myString = myVector[i];
-       retVector[i] = myString;
+//       myString = myVector[i];
+//       retVector[i] = myString;
 //       Rcpp::Rcout << "Value: " << myString << "\n";
+//       Rcpp::Rcout << "Value: " << retVector[i] << "\n";
      }
    }
 };
@@ -54,7 +57,7 @@ Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
   getElement getElement(tmpVector1, tmpVector2);
 
   // Call it with parallelFor
-  parallelFor(0, tmpVector1.size(), getElement);
+  parallelFor(0, tmpVector1.size() - 1, getElement);
 
   // allocate the string we will return 
   Rcpp::StringVector retVector(tmpVector2.size());

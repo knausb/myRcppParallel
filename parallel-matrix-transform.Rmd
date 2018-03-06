@@ -53,8 +53,8 @@ The `SquareRoot` function object below includes pointers to the input matrix as 
 
 ```{r}
 library(Rcpp)
-#
-sourceCpp('2014-06-29-parallel-matrix-transform.cpp')
+#sourceCpp('2014-06-29-parallel-matrix-transform.cpp')
+sourceCpp('parallel-matrix-transform.cpp')
 ```
 
 
@@ -94,17 +94,17 @@ A comparison of the performance of the two functions shows the parallel version 
 
 ```{r}
 # allocate a matrix
-#m <- matrix(as.numeric(c(1:1000000)), nrow = 1000, ncol = 1000)
+m <- matrix(as.numeric(c(1:1000000)), nrow = 1000, ncol = 1000)
 
 # ensure that serial and parallel versions give the same result
-#stopifnot(identical(matrixSqrt(m), parallelMatrixSqrt(m)))
+stopifnot(identical(matrixSqrt(m), parallelMatrixSqrt(m)))
 
 # compare performance of serial and parallel
 library(rbenchmark)
-#res <- benchmark(matrixSqrt(m),
-#                 parallelMatrixSqrt(m),
-#                 order="relative")
-#res[,1:4]
+res <- benchmark(matrixSqrt(m),
+                 parallelMatrixSqrt(m),
+                 order="relative")
+res[,1:4]
 ```
 
 You can learn more about using RcppParallel at  [https://rcppcore.github.com/RcppParallel](https://rcppcore.github.com/RcppParallel).
