@@ -108,14 +108,17 @@ struct getElement : public Worker {
    void operator()(std::size_t begin, std::size_t end) {
 //     Rcpp::Rcout << "Value: " << begin << "\n";
      for (std::size_t i = begin; i < end; i++) {
-//       Rcpp::checkUserInterrupt();
-//       retVector[i] = "blah";
 //       retVector[i] = myVector[i];
        myString = myVector[i];
+//       char myDelim = ':';
+//       int element = 2;
+// getElement is currently defined for Rcpp::StringVector.
+//       myString = getElement(myString, myDelim, element);
        retVector[i] = myString;
-//       retVector[i] = i;
+//       Don't do the following/
 //       Rcpp::Rcout << "Value: " << myString << "\n";
-//       Rcpp::Rcout << "Value: " << retVector[i] << "\n";
+//       Or this.
+//       Rcpp::checkUserInterrupt();
      }
    }
 };
@@ -144,7 +147,8 @@ Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
   struct getElement getElement(tmpVector1, tmpVector2);
 
   // Call it with parallelFor
-  parallelFor(0, tmpVector1.size() - 1, getElement);
+  unsigned int grainSize = 100;
+  parallelFor(0, tmpVector1.size() - 1, getElement, grainSize);
 
   // allocate the string we will return 
   Rcpp::StringVector retVector(tmpVector2.size());
@@ -168,9 +172,9 @@ Rcpp::StringVector rcpp_parallel_delimitString(Rcpp::StringVector myVector) {
 
 /*** R
 #n <- 1e7
-#n <- 1e6
 #
-n <- 1e1
+n <- 1e6
+#n <- 1e1
 myGT <- paste(sample(0:1, size = n, replace = TRUE),
               sample(0:1, size = n, replace = TRUE),
               sep = "/")
@@ -201,6 +205,7 @@ head(gt1)
 
 /*** R
 #
+RcppParallel::setThreadOptions(numThreads = 4)
 microbenchmark(gt2 <- rcpp_parallel_delimitString(myGT), times = nTimes)
 #
 head(gt2)
