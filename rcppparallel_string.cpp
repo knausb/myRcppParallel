@@ -22,11 +22,11 @@ struct getElement : public Worker {
 //     Rcpp::Rcout << "Value: " << begin << "\n";
      for (std::size_t i = begin; i < end; i++) {
 //       Rcpp::checkUserInterrupt();
-//       Rcpp::Rcout << "Value: " << i << "\n";
-//       retVector[i] = "blah";
+       retVector[i] = "blah";
 //       retVector[i] = myVector[i];
 //       myString = myVector[i];
 //       retVector[i] = myString;
+//       retVector[i] = i;
 //       Rcpp::Rcout << "Value: " << myString << "\n";
 //       Rcpp::Rcout << "Value: " << retVector[i] << "\n";
      }

@@ -207,25 +207,25 @@ myGT &lt;- paste(myGT, LETTERS,
               sep = &quot;:&quot;)
 myGT &lt;- paste(myGT, sample(1:200, size = n, replace = TRUE), sep = &quot;:&quot;)
 head(myGT)</code></pre>
-<pre><code>## [1] &quot;0/0:A:9,31:56&quot;     &quot;0/1:B:50,173:47&quot;   &quot;0/1:C:8,143:93&quot;   
-## [4] &quot;0/1:D:162,13:107&quot;  &quot;1/1:E:121,110:105&quot; &quot;1/0:F:93,11:120&quot;</code></pre>
+<pre><code>## [1] &quot;1/1:A:172,112:166&quot; &quot;0/1:B:195,162:165&quot; &quot;0/1:C:124,153:128&quot;
+## [4] &quot;0/1:D:35,122:112&quot;  &quot;1/1:E:18,191:6&quot;    &quot;1/1:F:2,188:86&quot;</code></pre>
 <pre class="r"><code>library(microbenchmark)
 nTimes &lt;- 20
 microbenchmark(gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3), times = nTimes)</code></pre>
 <pre><code>## Unit: microseconds
-##                                expr   min    lq    mean median     uq
-##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 3.478 3.648 55.7324 3.8925 4.0715
-##      max neval
-##  949.691    20</code></pre>
+##                                expr  min     lq    mean median     uq
+##  gt1 &lt;- delimitString(myGT, &quot;:&quot;, 3) 3.79 3.9695 52.8549 4.1245 4.3125
+##     max neval
+##  950.59    20</code></pre>
 <pre class="r"><code>head(gt1)</code></pre>
-<pre><code>## [1] &quot;9,31&quot;    &quot;50,173&quot;  &quot;8,143&quot;   &quot;162,13&quot;  &quot;121,110&quot; &quot;93,11&quot;</code></pre>
+<pre><code>## [1] &quot;172,112&quot; &quot;195,162&quot; &quot;124,153&quot; &quot;35,122&quot;  &quot;18,191&quot;  &quot;2,188&quot;</code></pre>
 <pre class="r"><code>#
 microbenchmark(gt2 &lt;- rcpp_parallel_delimitString(myGT), times = nTimes)</code></pre>
 <pre><code>## Unit: microseconds
-##                                      expr   min    lq     mean median
-##  gt2 &lt;- rcpp_parallel_delimitString(myGT) 7.097 7.496 57.23095 7.6495
-##      uq     max neval
-##  14.606 775.264    20</code></pre>
+##                                      expr   min     lq     mean median
+##  gt2 &lt;- rcpp_parallel_delimitString(myGT) 8.085 8.4355 64.18645   8.77
+##     uq     max neval
+##  9.434 943.406    20</code></pre>
 <pre class="r"><code>#
 head(gt2)</code></pre>
 <pre><code>## [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
