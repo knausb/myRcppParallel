@@ -11,8 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(Rcpp)
-sourceCpp('rcppparallel_string2.cpp')
+#sourceCpp('rcppparallel_string2.cpp')
 
+
+Rcpp::sourceCpp('RcppParallel_matrix_of_strings.cpp')
 ```
 
 
