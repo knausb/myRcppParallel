@@ -29,8 +29,8 @@
 
 #include <Rcpp.h>
 
-
-std::string getElement( std::string mystring, char split, int element ) {
+// [[Rcpp::export]]
+std::string getElement( std::string &mystring, char &split, int &element ) {
   std::string rstring;
   int elementN = 0;
   unsigned int i=0;
@@ -110,9 +110,8 @@ struct getElement : public Worker {
      for (std::size_t i = begin; i < end; i++) {
 //       retVector[i] = myVector[i];
        myString = myVector[i];
-//       char myDelim = ':';
-//       int element = 2;
-// getElement is currently defined for Rcpp::StringVector.
+       char myDelim = ':';
+       int element = 2;
 //       myString = getElement(myString, myDelim, element);
        retVector[i] = myString;
 //       Don't do the following/
