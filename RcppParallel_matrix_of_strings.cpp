@@ -5,6 +5,7 @@ using namespace RcppParallel;
 // [[Rcpp::depends(RcppParallel)]]
 
 
+// Our function object
 struct getElement : public Worker {
    // input vector to read from
 //   const std::vector< std::string > myVector;
@@ -35,7 +36,8 @@ struct getElement : public Worker {
 
 
 
-
+// This is what we'll call from R
+//
 // [[Rcpp::export]]
 void stringExtract(Rcpp::StringMatrix RcppMatrix) {
   // Because Rcpp data structures are not thread safe
@@ -58,9 +60,6 @@ void stringExtract(Rcpp::StringMatrix RcppMatrix) {
   // Call it with parallelFor
   unsigned int grainSize = 100;
   parallelFor(0, CppMatrix.size(), getElement, grainSize);
-  
-  
-  
 }
 
 
