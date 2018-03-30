@@ -5,6 +5,23 @@ using namespace RcppParallel;
 // [[Rcpp::depends(RcppParallel)]]
 
 
+/**
+ * ### Background
+ * 
+ * 
+ * 
+ */
+
+
+
+/**
+ * ### The function object
+ * 
+ * We'll use a [function object](https://www.cprogramming.com/tutorial/functors-function-objects-in-c++.html) (sometimes called a functor) as our worker function.
+ * 
+ */
+
+
 // Our function object
 struct getElement : public Worker {
    // input vector to read from
